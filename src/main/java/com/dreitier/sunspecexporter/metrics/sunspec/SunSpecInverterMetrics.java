@@ -55,19 +55,19 @@ public class SunSpecInverterMetrics implements SunSpecMetrics {
 
         try {
             InverterIntegerMapFacade inverterModel = device.getInverterIntegerMapModel();
-            this.currentTotalValue.set(inverterModel.getAmps());
-            this.currentPhaseAValue.set(inverterModel.getAmpsPhaseA());
-            this.currentPhaseBValue.set(inverterModel.getAmpsPhaseB());
-            this.currentPhaseCValue.set(inverterModel.getAmpsPhaseC());
-            this.voltagePhaseABValue.set(inverterModel.getPhaseVoltageAB());
-            this.voltagePhaseBCValue.set(inverterModel.getPhaseVoltageBC());
-            this.voltagePhaseCAValue.set(inverterModel.getPhaseVoltageCA());
-            this.voltagePhaseANValue.set(inverterModel.getPhaseVoltageAN());
-            this.voltagePhaseBNValue.set(inverterModel.getPhaseVoltageBN());
-            this.voltagePhaseCNValue.set(inverterModel.getPhaseVoltageCN());
-            this.ACPowerValue.set(inverterModel.getWatts());
-            this.ACFrequencyValue.set(inverterModel.getHz());
-            this.electricalPowerProducedValue.set(inverterModel.getWattHours());
+            this.currentTotalValue.set(Optional.ofNullable(inverterModel.getAmps()).orElse(0d));
+            this.currentPhaseAValue.set(Optional.ofNullable(inverterModel.getAmpsPhaseA()).orElse(0d));
+            this.currentPhaseBValue.set(Optional.ofNullable(inverterModel.getAmpsPhaseB()).orElse(0d));
+            this.currentPhaseCValue.set(Optional.ofNullable(inverterModel.getAmpsPhaseC()).orElse(0d));
+            this.voltagePhaseABValue.set(Optional.ofNullable(inverterModel.getPhaseVoltageAB()).orElse(0d));
+            this.voltagePhaseBCValue.set(Optional.ofNullable(inverterModel.getPhaseVoltageBC()).orElse(0d));
+            this.voltagePhaseCAValue.set(Optional.ofNullable(inverterModel.getPhaseVoltageCA()).orElse(0d));
+            this.voltagePhaseANValue.set(Optional.ofNullable(inverterModel.getPhaseVoltageAN()).orElse(0d));
+            this.voltagePhaseBNValue.set(Optional.ofNullable(inverterModel.getPhaseVoltageBN()).orElse(0d));
+            this.voltagePhaseCNValue.set(Optional.ofNullable(inverterModel.getPhaseVoltageCN()).orElse(0d));
+            this.ACPowerValue.set(Optional.ofNullable(inverterModel.getWatts()).orElse(0d));
+            this.ACFrequencyValue.set(Optional.ofNullable(inverterModel.getHz()).orElse(0d));
+            this.electricalPowerProducedValue.set(Optional.ofNullable(inverterModel.getWattHours()).orElse(0d));
             this.temperatureCabinet.set(Optional.ofNullable(inverterModel.getCabinetTemperature()).orElse(0d));
             this.temperatureHeatSink.set(Optional.ofNullable(inverterModel.getHeatSinkTemperature()).orElse(0d));
             this.temperatureOther.set(Optional.ofNullable(inverterModel.getOtherTemperature()).orElse(0d));
