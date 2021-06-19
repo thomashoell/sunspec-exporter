@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import nl.basjes.energy.sunspec.MissingMandatoryFieldException;
 import nl.basjes.energy.sunspec.ParseSunSpec;
 
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -24,7 +23,6 @@ public class SunSpecCommonMetrics implements SunSpecMetrics {
     @NonNull
     private final SunSpecDevice device;
 
-    private Map<String, Object> modelMap;
     private String operatingState;
 
     private Gauge infoMetricsGauge;
@@ -51,18 +49,16 @@ public class SunSpecCommonMetrics implements SunSpecMetrics {
     @Override
     public void refresh() throws SunSpecException {
         try {
-            ParseSunSpec.Model_1 commonModel = device.getCommonModel();
-            InverterIntegerMapFacade inverterModel = device.getInverterIntegerMapModel();
-            if (null == modelMap || null == operatingState) {
+            final ParseSunSpec.Model_1 commonModel = device.getCommonModel();
+            final InverterIntegerMapFacade inverterModel = device.getInverterIntegerMapModel();
 
-                this.modelMap = commonModel.toHashMap();
-                this.operatingState = inverterModel.getOperatingState();
+            if (null == operatingState) {
+                drop();
                 updateStatusMetric(commonModel, inverterModel);
             } else {
-                final Map<String, Object> commonModelHashMap = commonModel.toHashMap();
                 final String inverterState = inverterModel.getOperatingState();
 
-                if (!this.modelMap.equals(commonModelHashMap) || !this.operatingState.equals(inverterState)) {
+                if (!this.operatingState.equals(inverterState)) {
                     drop();
                     updateStatusMetric(commonModel, inverterModel);
                 }
@@ -99,5 +95,7 @@ public class SunSpecCommonMetrics implements SunSpecMetrics {
                         "host", device.getDevice().getHost()
                 )
                 .register(registry);
+
+        this.operatingState = inverterModel.getOperatingState();
     }
 }

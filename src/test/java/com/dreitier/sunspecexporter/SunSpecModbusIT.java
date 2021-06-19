@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author tho[at]dreitier[dot]com
  */
-public class BlaIT {
+public class SunSpecModbusIT {
 
     @Test
     void name2() throws ModbusException, SunSpecException {
