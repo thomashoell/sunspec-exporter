@@ -13,6 +13,7 @@ import java.util.List;
  * @author tho[at]dreitier[dot]com
  */
 @PropertySource(value = "classpath:inverter.yaml", ignoreResourceNotFound = true, factory = YamlPropertySourceFactory.class)
+@PropertySource(value = "file:${SUNSPEC_EXPORTER_CONFIG_FILE}", ignoreResourceNotFound = true, factory = YamlPropertySourceFactory.class)
 @Configuration
 @ConfigurationProperties(prefix = "modbus")
 @Data
