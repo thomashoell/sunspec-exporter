@@ -1,0 +1,13 @@
+# Copy to config.yaml (working directory) or point SUNSPEC_EXPORTER_CONFIG_FILE to it.
+# Every setting can also be given as environment variable, e.g. MODBUS_DEVICES_0_HOST=192.168.0.10
+modbus:
+  # how often the devices are polled; Prometheus always gets the latest values
+  poll-interval: 10s
+  # connect/read timeout per Modbus request
+  timeout: 3s
+  devices:
+    - host: 192.168.0.10
+      # optional, defaults shown
+      port: 502
+      # Modbus unit ID of the SunSpec device (Fronius: 1 or 126 depending on the inverter's Modbus settings)
+      unit-id: 126
