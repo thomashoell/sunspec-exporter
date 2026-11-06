@@ -136,8 +136,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # fails as long as release.yml has never run on main (e.g. the PR that adds it)
           run_id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow release.yml --branch main --status success \
-            --limit 1 --json databaseId --jq '.[0].databaseId // empty')
+            --limit 1 --json databaseId --jq '.[0].databaseId // empty' 2>/dev/null) || run_id=
           if [ -z "$run_id" ] || ! gh run download "$run_id" -R "$GITHUB_REPOSITORY" -n coverage -D base; then
             echo "::notice::No coverage of main found, the report shows absolute values only"
           fi
@@ -169,6 +170,8 @@ jobs:
     permissions:
       contents: read
       security-events: write
+      # the CodeQL action reads the workflow run (otherwise "Resource not accessible by integration")
+      actions: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -208,6 +211,8 @@ jobs:
     permissions:
       contents: read
       security-events: write
+      # upload-sarif reads the workflow run (otherwise "Resource not accessible by integration")
+      actions: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
