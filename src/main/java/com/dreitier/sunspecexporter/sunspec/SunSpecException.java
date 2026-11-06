@@ -1,14 +1,11 @@
 package com.dreitier.sunspecexporter.sunspec;
 
 /**
- * @author tho[at]dreitier[dot]com
+ * The device doesn't behave like a supported SunSpec device.
  */
-public class SunSpecException extends Exception{
+public class SunSpecException extends Exception {
+
     public SunSpecException(String message) {
         super(message);
-    }
-
-    public SunSpecException(String message, Throwable cause) {
-        super(message, cause);
     }
 }

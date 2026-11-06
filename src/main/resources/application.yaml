@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: sunspec-exporter
+  config:
+    # device configuration (modbus.*, see config.yaml.template): ./config.yaml and the file given in
+    # SUNSPEC_EXPORTER_CONFIG_FILE (default /etc/sunspec-exporter/config.yaml, used by the container image)
+    import:
+      - optional:file:./config.yaml
+      - optional:file:${SUNSPEC_EXPORTER_CONFIG_FILE:/etc/sunspec-exporter/config.yaml}
+  threads:
+    virtual:
+      enabled: true
+  main:
+    banner-mode: off
+
+server:
+  port: 8080
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  info:
+    java:
+      enabled: true

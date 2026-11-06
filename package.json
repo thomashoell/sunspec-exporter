@@ -1,0 +1,13 @@
+{
+  "name": "sunspec-exporter-release-tooling",
+  "private": true,
+  "description": "Release tooling (semantic-release) for sunspec-exporter; not part of the Java application",
+  "engines": {
+    "node": ">=24.10.0"
+  },
+  "devDependencies": {
+    "@semantic-release/exec": "7.1.0",
+    "conventional-changelog-conventionalcommits": "9.3.1",
+    "semantic-release": "25.0.9"
+  }
+}
