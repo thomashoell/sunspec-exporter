@@ -9,6 +9,8 @@ name: Release
 # 3. the jar (+ SHA-256) is attached to the release
 # 4. the multi-arch image is pushed to GHCR and signed
 # Jar and image get build provenance attestations (verify with `gh attestation verify`).
+# 5. thomashoell/helm-charts gets a repository_dispatch "sunspec-exporter-released"; its workflow opens a PR
+#    that bumps image.tag of the sunspec-exporter chart (token of the GitHub App thomashoell-release-bot).
 on:
   push:
     branches:
@@ -182,3 +184,30 @@ jobs:
           subject-name: ${{ env.IMAGE }}
           subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
+
+  helm-chart:
+    name: Helm chart PR
+    needs: [semantic-release, image]
+    if: needs.semantic-release.outputs.version != ''
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      # GITHUB_TOKEN can't reach other repositories; the app token is scoped to helm-charts only
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: helm-charts
+          permission-contents: write
+
+      - name: Notify helm-charts
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          VERSION: ${{ needs.semantic-release.outputs.version }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY_OWNER}/helm-charts/dispatches" \
+            -f event_type=sunspec-exporter-released \
+            -f "client_payload[version]=${VERSION}"
