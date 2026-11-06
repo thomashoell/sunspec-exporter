@@ -2,7 +2,7 @@
 
 # The jar is platform independent: build it once on the build platform, so multi-arch images don't need QEMU.
 # Pin the images to their digests with .github/scripts/pin-images.py; Dependabot keeps tags and digests up to date.
-FROM --platform=$BUILDPLATFORM maven:3.9-eclipse-temurin-21 AS builder
+FROM --platform=$BUILDPLATFORM maven:3.9-eclipse-temurin-26 AS builder
 
 # set by the release workflow (semantic-release), shown in /actuator/info
 ARG VERSION=0.0.0-SNAPSHOT
