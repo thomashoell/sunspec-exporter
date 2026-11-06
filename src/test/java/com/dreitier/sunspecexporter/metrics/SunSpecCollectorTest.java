@@ -120,16 +120,6 @@ class SunSpecCollectorTest {
     }
 
     @Test
-    void namesMatchTheCollectedMetrics() {
-        var reading = new DeviceReading(INFO, Map.of(InverterValue.AC_POWER, 100.0), "OFF",
-                List.of(new MpptInput(0, "", 1.0, 1.0, 1.0, 1.0)));
-        var collector = new SunSpecCollector(List.of(device("inverter", reading)));
-
-        assertThat(collector.getPrometheusNames())
-                .containsAll(collector.collect().stream().map(s -> s.getMetadata().getPrometheusName()).toList());
-    }
-
-    @Test
     void stateBeforeFirstPollIsDown() {
         var device = new SunSpecDevice(new ModbusProperties.Device("new", 502, 126), null, CLOCK);
         assertThat(device.state()).isEqualTo(new DeviceState(false, null, null, null, null));

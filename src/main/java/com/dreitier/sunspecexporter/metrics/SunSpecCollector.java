@@ -49,19 +49,6 @@ public class SunSpecCollector implements MultiCollector {
     }
 
     @Override
-    public List<String> getPrometheusNames() {
-        var names = new ArrayList<>(List.of("sunspec_up", "sunspec_poll_duration_seconds",
-                "sunspec_last_poll_success_timestamp_seconds", "sunspec", "sunspec_operating_state"));
-        for (InverterValue.Metric metric : InverterValue.Metric.values()) {
-            names.add(metric.metricName());
-        }
-        for (MpptMetric metric : MpptMetric.values()) {
-            names.add(metric.metricName);
-        }
-        return names;
-    }
-
-    @Override
     public MetricSnapshots collect() {
         var up = GaugeSnapshot.builder().name("sunspec_up")
                 .help("Whether the latest poll of the SunSpec device succeeded (1) or not (0)");
