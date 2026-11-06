@@ -62,6 +62,12 @@ updates:
       semantic-release:
         patterns:
           - "*"
+    ignore:
+      # 10.x needs a newer conventional-changelog-writer than semantic-release 25 bundles
+      # (release notes fail with 'Missing helper: "..."')
+      - dependency-name: conventional-changelog-conventionalcommits
+        update-types:
+          - version-update:semver-major
 
   # hook versions in .pre-commit-config.yaml; the CI lint job uses the same actionlint version
   - package-ecosystem: pre-commit
