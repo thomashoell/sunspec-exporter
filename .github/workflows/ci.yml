@@ -275,22 +275,10 @@ jobs:
           ignore-unfixed: true
           exit-code: '1'
 
-      # reporting only (Security tab): the whole image including the distroless base
+      # reporting only (Security tab, category trivy): the whole image including the distroless base,
+      # CRITICAL/HIGH with a fix, exit code 0
       - name: Scan image with Trivy
         if: ${{ !cancelled() }}
-        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        uses: dreitier/shared-ci-components/trivy-scan@486b3fed3ce26e365ef8de6a17cde2ad86b4e269 # v1.3.0
         with:
-          image-ref: sunspec-exporter:ci
-          format: sarif
-          output: trivy.sarif
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: '0'
-          skip-setup-trivy: true
-
-      - name: Upload Trivy results
-        if: ${{ !cancelled() && hashFiles('trivy.sarif') != '' }}
-        uses: github/codeql-action/upload-sarif@1bd86f2fdb4b86187fa4059f16f31a3202acc9ea # v4.39.4
-        with:
-          sarif_file: trivy.sarif
-          category: trivy
+          image: sunspec-exporter:ci
